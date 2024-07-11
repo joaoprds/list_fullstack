@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import ProductList from "./components/ProductList";
+import AddEditProduct from "./components/AddEditProduct";
+import Logs from "./components/Logs";
 
-function App() {
+const App = () => {
+  const [token, setToken] = useState("");
+
+  if (!token) {
+    return (
+      <Router>
+        <Switch>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/">
+            <Login setToken={setToken} />
+          </Route>
+        </Switch>
+      </Router>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/products">
+          <ProductList token={token} />
+        </Route>
+        <Route path="/add-product">
+          <AddEditProduct token={token} />
+        </Route>
+        <Route path="/edit-product/:id">
+          <AddEditProduct token={token} />
+        </Route>
+        <Route path="/logs">
+          <Logs token={token} />
+        </Route>
+      </Switch>
+    </Router>
   );
-}
+};
 
 export default App;
